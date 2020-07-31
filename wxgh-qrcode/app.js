@@ -40,8 +40,8 @@ router.get('/', async (ctx, next) => {
 
 router.get('/token', async (ctx, next) => {
   try {
-    let appid = 'wx36963a5a84d5ca4d'
-    let secret = '98431bcb5cac6b46ef132b6f544a11dd'
+    let appid = ''
+    let secret = ''
     let opts = {
       uri:
         'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' +
