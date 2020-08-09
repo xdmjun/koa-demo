@@ -12,6 +12,9 @@
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^8.0.8",
+    "node-localstorage": "^2.1.6",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
     "sha1": "^1.1.1",
     "xml2js": "^0.4.23"
   }
