@@ -181,7 +181,7 @@ router.post('/', async (ctx, next) => {
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-let server = app.listen(3000, function () {
+let server = app.listen(config.serverPort, function () {
   let host = server.address().address
   let port = server.address().port
   console.log('应用实例，访问地址为 http://localhost:%s', port)
