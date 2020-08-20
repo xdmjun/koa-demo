@@ -166,14 +166,23 @@ router.post('/', async (ctx, next) => {
           break
       }
     }
-  } else {
-    //其他情况
+  } else if (msgType == 'text') {
+    // 其他情况
+    // 接入智能机器人自动回复
+    let content = encodeURIComponent(xml.xml.Content[0])
+    // 图灵机器人
+    let txt = await tlRobot(content)
+    // 青云客机器人
+    // let txt = await qykRobot(content)
+    // 茉莉机器人
+    // let txt = await mlRobot(content)
+
     ctx.body = `<xml>
 		 <ToUserName><![CDATA[${toFromName}]]></ToUserName>
 		 <FromUserName><![CDATA[${toUserName}]]></FromUserName>
 		 <CreateTime>${createTime}</CreateTime>
 		 <MsgType><![CDATA[text]]></MsgType>
-		 <Content><![CDATA[你说啥？]]></Content>
+		 <Content><![CDATA[${txt}]]></Content>
 		 </xml>`
   }
 })
@@ -196,4 +205,62 @@ function parseXMLAsync(xml) {
       resolve(content)
     })
   })
+}
+
+async function mlRobot(content) {
+  let rtn = await rp({
+      method: 'GET',
+      uri: `http://i.itpk.cn/api.php?question=
+      ${content}&limit=5&api_key=${config.robotKey}&api_secret=${config.robotSecret}`,
+    }),
+    rt = unescape(rtn.replace(/\\/g, '%')).replace(/%r%n/g, ''),
+    txt = ''
+
+  if (typeof rt == 'string') {
+    if (rt.indexOf('{') != -1) {
+      try {
+        let obj = JSON.parse(rt.trim())
+        if (typeof obj == 'object' && obj) {
+          txt = '【' + obj.title + '】\n' + obj.content
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    } else {
+      txt = rt
+    }
+  }
+  return txt
+}
+
+async function qykRobot(content) {
+  let rtn = await rp({
+      method: 'GET',
+      uri: `http://api.qingyunke.com/api.php?key=free&appid=0&msg=${content}`,
+    }),
+    txt = JSON.parse(rtn).content
+  return txt
+}
+
+async function tlRobot(content) {
+  let params = {
+      reqType: 0,
+      perception: {
+        inputText: {
+          text: content,
+        },
+      },
+      userInfo: {
+        apiKey: config.apiKey,
+        userId: config.userId,
+      },
+    },
+    options = {
+      method: 'POST',
+      uri: 'http://openapi.tuling123.com/openapi/api/v2',
+      body: JSON.stringify(params),
+    },
+    rt = await rp(options),
+    txt = JSON.parse(rt).results[0].values.text
+  return txt
 }
