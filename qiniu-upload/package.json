@@ -1,0 +1,25 @@
+{
+  "name": "qiniu-upload",
+  "version": "1.0.0",
+  "description": "up file demo",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "xg",
+  "license": "ISC",
+  "dependencies": {
+    "busboy": "^0.3.1",
+    "ejs": "^3.1.6",
+    "koa": "^2.11.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^8.0.8",
+    "koa-static": "^5.0.0",
+    "koa-views": "^7.0.1",
+    "path": "^0.12.7",
+    "qiniu": "^7.4.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
+    "util": "^0.12.4"
+  }
+}
