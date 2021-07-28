@@ -57,6 +57,14 @@ router.get('/', async (ctx, next) => {
   await next();
 });
 
+router.get('/jump', async (ctx, next) => {
+  //获取当前url
+  var url =
+    ctx.request.protocol + '://' + ctx.request.host + ctx.request.originalUrl;
+    await ctx.render('jump', { signPackage: await sign(url) });
+  await next();
+});
+
 router.get('/sig', async (ctx, next) => {
   try {
     //获取当前url
@@ -78,7 +86,7 @@ app.use(router.allowedMethods());
 let server = app.listen(4000, function () {
   let host = server.address().address;
   let port = server.address().port;
-  console.log('应用实例，访问地址为 http://localhost:%s', port);
+  console.log('微信 JS-SDK Demo 应用实例，访问地址为 http://localhost:%s', port);
 });
 
 async function sign(url) {
