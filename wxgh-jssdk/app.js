@@ -10,6 +10,7 @@ const static = require('koa-static');
 const cors = require('koa2-cors');
 const cache = require('memory-cache');
 const sha1 = require('sha1'); //签名算法
+const qr_image = require('qr-image');
 const config = require('./config');
 
 app.use(bodyParser());
@@ -57,11 +58,22 @@ router.get('/', async (ctx, next) => {
   await next();
 });
 
+router.get('/qr', async (ctx, next) => {
+  //获取当前url
+  var url =
+    ctx.request.protocol + '://' + ctx.request.host + '/' + ctx.query.url;
+  console.log(url);
+  const temp_qrcode = qr_image.image(url);
+  ctx.type = 'image/png';
+  ctx.body = temp_qrcode;
+  await next();
+});
+
 router.get('/jump', async (ctx, next) => {
   //获取当前url
   var url =
     ctx.request.protocol + '://' + ctx.request.host + ctx.request.originalUrl;
-    await ctx.render('jump', { signPackage: await sign(url) });
+  await ctx.render('jump', { signPackage: await sign(url) });
   await next();
 });
 

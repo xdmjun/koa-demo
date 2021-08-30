@@ -68,7 +68,7 @@
           // 在 pc 上则给提示引导到手机端打开
           var containerEl = document.getElementById('desktop-web-container')
           containerEl.classList.remove('hidden')
-          containerEl.classList.add('full', 'desktop-web-container')
+          containerEl.classList.add('desktop-web-container')
         }  else {
           var containerEl = document.getElementById('public-web-container')
           containerEl.classList.remove('hidden')
@@ -165,14 +165,20 @@
       }
 
       .desktop-web-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .desktop-web-container p {
         position: absolute;
-        top: 40%;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .tip {
+        text-align: center;
+      }
+      .qrcode {
+        width: 180px;
+        height: 180px;
+        display: block;
       }
     </style>
   </head>
@@ -195,7 +201,9 @@
         </wx-open-launch-weapp>
       </div>
       <div id="desktop-web-container" class="hidden">
-        <p class="">请在手机打开网页链接</p>
+        <div class="tip">请用手机打开网页链接
+          <img class="qrcode" src="/qr?url=jump" alt="当前页面二维码">
+        </div>
       </div>
     </div>
   </body>
